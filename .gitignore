@@ -67,3 +67,12 @@ allure-report/
 *.sw?
 .DS_Store
 Thumbs.db
+
+
+# ==========================================================================
+# 3-Performance-Testing (性能测试垃圾文件与中间产物隔离)
+# ==========================================================================
+3-Performance-Testing/.pytest_cache/
+3-Performance-Testing/allure-results/
+3-Performance-Testing/__pycache__/
+3-Performance-Testing/temp_perf*.csv

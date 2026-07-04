@@ -32,6 +32,7 @@ PRO-TEST-AUTOMATION-FRAMEWORK/
 │   └── test_perf_bridge.py            # 桥接脚本：Pytest 驱动 Locust 运行，并将 CSV 自动转为 Allure 看板 
 ├── allure-results/             # 📊 自动生成：测试结果集（已被 .gitignore 忽略）
 ├── .gitignore                  # 🌟 忽略所有的 allure-results/ 和 html 报告，防止垃圾文件污染 Git
+├── Jenkinsfile                        # 核心交付件：企业级 Jenkins 声明式流水线（Pipeline as Code）
 ├── LICENSE
 ├── README.md                   # 全局总控台：挂载 Allure 报告截图，展示你的可视化成果
 ├── requirements.txt            # 统一依赖管理：引入 pytest-allure 等核心库

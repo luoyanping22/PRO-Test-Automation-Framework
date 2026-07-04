@@ -1,0 +1,72 @@
+name: 🚀 PRO-Framework 全链路 CI/CD 质量红线流水线
+
+# 触发条件：当主分支有代码推送，或者每天凌晨定时跑测
+on:
+  push:
+    branches: [ "main", "master" ]
+  schedule:
+    - cron: '0 17 * * *'  # 国际标准时间 17:00 (即北京时间凌晨 1:00) 定时触发压测
+
+jobs:
+  # 阶段一：接口自动化卡点测试
+  api-automation-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 检出项目源码
+        uses: actions/checkout@v4
+
+      - name: 🐍 初始化 Python 环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: 📦 安装框架全量依赖
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 🎯 穿透执行接口自动化测试 (API Test)
+        run: |
+          cd 1-API-Automation
+          python -m pytest -vs tests/ --alluredir=allure-results
+
+      - name: 📂 归档保存 Allure 原始凭证 (Artifacts)
+        if: always() # 无论测试成功还是失败，都必须保存报告凭证
+        uses: actions/artifacts@v4
+        with:
+          name: api-allure-results
+          path: 1-API-Automation/allure-results/
+          retention-days: 7
+
+  # 阶段二：定时性能容量演练（仅在定时任务或接口通过后触发）
+  performance-stress-test:
+    needs: api-automation-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 检出项目源码
+        uses: actions/checkout@v4
+
+      - name: 🐍 初始化 Python 环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 📦 安装性能专项依赖
+        run: |
+          pip install locust pandas psutil
+
+      - name: 📈 触发自动化无界面压测与施压机自监控
+        run: |
+          cd 3-Performance-Testing
+          python run_perf_test.py
+
+      - name: 📂 归档保存离线性能 HTML 看板与监控报表
+        if: always()
+        uses: actions/artifacts@v4
+        with:
+          name: performance-reports
+          path: |
+            3-Performance-Testing/perf_report.html
+            3-Performance-Testing/*_system_metrics.csv
+          retention-days: 7

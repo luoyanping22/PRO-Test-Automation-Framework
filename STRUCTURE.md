@@ -1,15 +1,16 @@
 PRO-TEST-AUTOMATION-FRAMEWORK/
-├── .github/
+├── .github/                           # GitHub 自动化运维中心
 │   └── workflows/
-│       └── run_tests.yml       # 🚀 CI/CD 资产：GitHub Actions 提交代码自动跑测流
+│       └── ci_pipeline.yml            # GitHub Actions 综合质量红线流水线
+├── .gitee/                            # Gitee 自动化运维中心
+│   └── workflows/
+│       └── ci_pipeline.yml            # Gitee Go 综合质量红线流水线
 ├── 1-API-Automation/               # 接口自动化测试板块
 │   ├── api_objects/                # 接口对象层 (API Object Model)
 │   │   └── auth_api.py             # 封装登录鉴权、Token 提取等底层接口请求
-│   │
 │   ├── tests/                      # 测试用例层
 │   │   ├── test_login.py           # 登录鉴权全业务流测试用例
 │   │   └── test_user.py            # 用户信息提取与全局 Token 注入鉴权测试用例
-│   │
 │   ├── allure-results/             # Allure 测试报告原始结果数据目录 (自动生成)
 │   └── conftest.py                 # Pytest 全局配置文件（包含 Session 级 Mock 登录夹具）
 ├── 2-UI-Automation/            # 🖥️ UI 自动化 (基于 Playwright + SauceDemo)

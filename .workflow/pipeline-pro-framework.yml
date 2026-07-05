@@ -1,0 +1,56 @@
+version: '1.0'
+name: pipeline-pro-framework
+displayName: PRO-Framework-CICD-Pipeline
+triggers:
+  trigger: auto
+  push:
+    branches:
+      prefix:
+        - main
+        - master
+stages:
+  - name: stage-api
+    displayName: API-Automation-Test
+    strategy: naturally
+    trigger: auto
+    executor: []
+    steps:
+      - step: build@python
+        name: api_test
+        displayName: API-Automation-Test
+        pythonVersion: '3.13'
+        commands:
+          - python -m pip install --upgrade pip
+          - pip install -r requirements.txt
+          - cd 1-API-Automation
+          - python -m pytest -vs tests/ --alluredir=allure-results
+        artifacts:
+          - name: BUILD_ARTIFACT
+            path:
+              - ./
+        caches: []
+        notify: []
+        strategy:
+          retry: '0'
+  - name: stage-perf
+    displayName: Performance-Stress-Test
+    strategy: naturally
+    trigger: auto
+    executor: []
+    steps:
+      - step: build@python
+        name: perf_test
+        displayName: Performance-Stress-Test
+        pythonVersion: '3.13'
+        commands:
+          - pip install locust pandas psutil
+          - cd 3-Performance-Testing
+          - python run_perf_test.py
+        artifacts:
+          - name: BUILD_ARTIFACT
+            path:
+              - ./
+        caches: []
+        notify: []
+        strategy:
+          retry: '0'

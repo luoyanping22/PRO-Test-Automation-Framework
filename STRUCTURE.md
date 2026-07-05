@@ -2,9 +2,8 @@ PRO-TEST-AUTOMATION-FRAMEWORK/
 ├── .github/                           # GitHub 自动化运维中心
 │   └── workflows/
 │       └── ci_pipeline.yml            # GitHub Actions 综合质量红线流水线
-├── .gitee/                            # Gitee 自动化运维中心
-│   └── workflows/
-│       └── ci_pipeline.yml            # Gitee Go 综合质量红线流水线
+├── .workflow/                         # Gitee 自动化运维大盘（Gitee Go 专属）
+│   └── pipeline-pro-framework.yml     # Gitee 官方图形化视图自动生成的完美流水线配置
 ├── 1-API-Automation/               # 接口自动化测试板块
 │   ├── api_objects/                # 接口对象层 (API Object Model)
 │   │   └── auth_api.py             # 封装登录鉴权、Token 提取等底层接口请求

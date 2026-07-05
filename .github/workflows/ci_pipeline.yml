@@ -32,8 +32,8 @@ jobs:
           python -m pytest -vs tests/ --alluredir=allure-results
 
       - name: 📂 归档保存 Allure 原始凭证 (Artifacts)
-        if: always() # 无论测试成功还是失败，都必须保存报告凭证
-        uses: actions/artifacts@v4
+        if: always() 
+        uses: actions/upload-artifact@v4
         with:
           name: api-allure-results
           path: 1-API-Automation/allure-results/
@@ -63,7 +63,7 @@ jobs:
 
       - name: 📂 归档保存离线性能 HTML 看板与监控报表
         if: always()
-        uses: actions/artifacts@v4
+        uses: actions/upload-artifact@v4
         with:
           name: performance-reports
           path: |

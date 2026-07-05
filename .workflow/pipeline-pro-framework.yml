@@ -20,8 +20,8 @@ stages:
         displayName: API-Automation-Test
         pythonVersion: '3.13'
         commands:
-          - python -m pip install --upgrade pip
-          - pip install -r requirements.txt
+          - python -m pip install --upgrade pip -i https://tsinghua.edu.cn
+          - pip install -r requirements.txt -i https://tsinghua.edu.cn
           - cd 1-API-Automation
           - python -m pytest -vs tests/ --alluredir=allure-results
         artifacts:
@@ -43,7 +43,7 @@ stages:
         displayName: Performance-Stress-Test
         pythonVersion: '3.13'
         commands:
-          - pip install locust pandas psutil
+          - pip install locust pandas psutil -i https://tsinghua.edu.cn
           - cd 3-Performance-Testing
           - python run_perf_test.py
         artifacts:

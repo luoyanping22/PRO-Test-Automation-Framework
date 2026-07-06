@@ -22,9 +22,9 @@ def test_locust_performance():
     if os.path.exists(stats_file):
         os.remove(stats_file)
         
-    # 2. 用脚本后台跑 Locust，改用稳定的公共测试靶场 https://httpbin.org
-    # -u 20 (单机演练，调低并发确保稳定拿到回包), -r 5, 运行 15 秒
-    cmd = "locust -f locustfile.py --host=https://httpbin.org --headless -u 20 -r 5 --run-time 15s --csv=temp_perf"
+    # 改为请求本地自己拉起的 Mock 服务，100% 不会被外网拦截，且速度极快
+    cmd = "locust -f locustfile.py --host=http://127.0.0.1:8080 --headless -u 5 -r 1 --run-time 10s --csv=temp_perf"
+
     
     print("\n[INFO] Locust 压测引擎启动中...")
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True)

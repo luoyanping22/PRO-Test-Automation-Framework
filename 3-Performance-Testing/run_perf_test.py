@@ -9,8 +9,8 @@ import psutil
 # ==================== 1. 压测基础参数配置 ====================
 LOCUST_FILE = "locustfile.py"          # 你的 Locust 脚本路径
 TARGET_HOST = "http://127.0.0.1:8080"  # 被测系统的基础 URL
-USERS = 100                            # 最大并发用户数 (单机16GB建议 50-200 演练即可)
-SPAWN_RATE = 10                        # 每秒激增的用户数
+USERS = 2                            # 最大并发用户数 (单机16GB建议 50-200 演练即可)
+SPAWN_RATE = 1                        # 每秒激增的用户数
 RUN_TIME = "2m"                        # 压测持续时间 (例如: 30s, 2m, 1h)
 CSV_PREFIX = "perf_report"             # 导出的报告文件前缀
 

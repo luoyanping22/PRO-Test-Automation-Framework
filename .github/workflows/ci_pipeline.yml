@@ -40,6 +40,7 @@ jobs:
           retention-days: 7
 
   # 阶段二：定时性能容量演练（仅在定时任务或接口通过后触发）
+  # 阶段二：定时性能容量演练（仅在定时任务或接口通过后触发）
   performance-stress-test:
     needs: api-automation-test
     runs-on: ubuntu-latest
@@ -52,13 +53,52 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: 📦 安装性能专项依赖
+      - name: 📦 安装性能专项以及测试运行依赖
         run: |
-          pip install locust pandas psutil
+          pip install locust pandas psutil pytest allure-pytest
+
+      - name: 🚀 动态拉起闭环 Mock 测试靶场
+        run: |
+          cd 3-Performance-Testing
+          # 1. 动态生成符合您 Locust 相对路径的极简 Mock 后端
+          cat << 'EOF' > mock_server.py
+          from http.server import BaseHTTPRequestHandler, HTTPServer
+          import time
+          class MockHandler(BaseHTTPRequestHandler):
+              def do_GET(self):
+                  if self.path == "/":
+                      self.send_response(200)
+                      self.send_header("Content-Type", "application/json")
+                      self.end_headers()
+                      self.wfile.write(b'{"status": "success", "message": "Welcome to core query api"}')
+                  elif self.path.startswith("/delay/"):
+                      try:
+                          delay_time = float(self.path.split("/")[-1])
+                          time.sleep(delay_time)
+                      except: pass
+                      self.send_response(200)
+                      self.send_header("Content-Type", "application/json")
+                      self.end_headers()
+                      self.wfile.write(b'{"status": "success", "data": "mock_delay_response"}')
+                  else:
+                      self.send_response(404)
+                      self.end_headers()
+          if __name__ == "__main__":
+              server = HTTPServer(('127.0.0.1', 8080), MockHandler)
+              print("Mock Server running on port 8080...")
+              server.serve_forever()
+          EOF
+          
+          # 2. 在虚拟机后台隐式启动它
+          python mock_server.py > mock_server.log 2>&1 &
+          
+          # 3. 强制等待 3 秒确保端口就绪
+          sleep 3
 
       - name: 📈 触发自动化无界面压测与施压机自监控
         run: |
           cd 3-Performance-Testing
+          # 在执行前，请确保您已经在本地将 run_perf_test.py 里的 USERS 改为了 5，SPAWN_RATE 改为了 1
           python run_perf_test.py
 
       - name: 📂 归档保存离线性能 HTML 看板与监控报表
@@ -70,3 +110,4 @@ jobs:
             3-Performance-Testing/perf_report.html
             3-Performance-Testing/*_system_metrics.csv
           retention-days: 7
+

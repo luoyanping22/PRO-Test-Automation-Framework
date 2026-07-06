@@ -48,7 +48,7 @@ stages:
           - pip install locust pandas psutil pytest allure-pytest -i https://mirrors.aliyun.com/pypi/simple/
           
           # 2. 切换到性能测试专用目录
-           Chil-dir 切换目录
+          # Chil-dir 切换目录
           - cd 3-Performance-Testing
           - export PATH=$PATH:$HOME/.local/bin
           

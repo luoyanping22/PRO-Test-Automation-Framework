@@ -1,0 +1,64 @@
+version: "1.0"
+name: pipeline-test-framework
+displayName: pipeline-test-framework
+stages:
+- name: API-Automation-Test
+  displayName: API-Automation-Test
+  strategy: naturally
+  trigger: auto
+  steps:
+  - step: build@python
+    name: 61bb06fe
+    displayName: Python 构建
+    pythonVersion: "3.9"
+    commands:
+    - python -m pip install --upgrade pip -i https://mirrors.aliyun.com/pypi/simple/
+    - pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
+    - cd 1-API-Automation
+    - python -m pytest -vs tests/ --alluredir=allure-results
+    artifacts:
+    - name: BUILD_ARTIFACT
+      path:
+      - ./
+      type: .tar.gz
+    strategy:
+      retry: "0"
+      resource:
+        cpu: "2"
+        memory: "4"
+- name: Performance-Stress-Test
+  displayName: Performance-Stress-Test
+  strategy: naturally
+  trigger: auto
+  steps:
+  - step: build@python
+    name: 61a94d35
+    displayName: Python 构建
+    pythonVersion: "3.9"
+    commands:
+    - python -m pip install --upgrade pip -i https://mirrors.aliyun.com/pypi/simple/
+    - pip install locust pandas psutil pytest allure-pytest -i https://mirrors.aliyun.com/pypi/simple/
+    - cd 3-Performance-Testing
+    - export PATH=$PATH:$HOME/.local/bin
+    - python mock_server.py > mock.log 2>&1 &
+    - sleep 3
+    - python -m pytest test_perf_bridge.py --alluredir=../allure-results
+    artifacts:
+    - name: BUILD_ARTIFACT
+      path:
+      - ./
+      type: .tar.gz
+    strategy:
+      retry: "0"
+      resource:
+        cpu: "2"
+        memory: "4"
+triggers:
+  trigger: auto
+  push:
+    branches:
+      prefix:
+      - main
+      - master
+      precise: []
+      include: []

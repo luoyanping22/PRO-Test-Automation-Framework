@@ -55,11 +55,8 @@ stages:
         cpu: "2"
         memory: "4"
 triggers:
-  trigger: auto
   push:
     branches:
-      prefix:
-      - main
-      - master
-      precise: []
-      include: []
+      include:
+        - main
+        - master

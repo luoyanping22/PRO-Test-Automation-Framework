@@ -169,3 +169,4 @@ locust -f locustfile.py
 * 📊 `api-allure-results/`：接口自动化测试原始凭证（支持一键渲染精美 Allure 报告）。
 * 📈 `perf_report.html`：Locust 业务并发表现、吞吐量（RPS）及响应时间趋势看板。
 * 🖥️ `perf_report_system_metrics.csv`：施压机硬件（CPU/内存/已用空间）秒级瓶颈监控数据。
+ 

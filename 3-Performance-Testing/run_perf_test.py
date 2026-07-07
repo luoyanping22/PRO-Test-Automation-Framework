@@ -106,3 +106,4 @@ if __name__ == "__main__":
     main()
 
 # force gitee go to re-register newly renamed workflow file# final verify automatic trigger
+# complete pipeline activation test

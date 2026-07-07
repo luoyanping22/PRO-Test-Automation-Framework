@@ -10,10 +10,11 @@ stages:
   - step: build@python
     name: 61bb06fe
     displayName: Python 构建
-    pythonVersion: "3.9"
+    pythonVersion: "3.12"
     commands:
     - python -m pip install --upgrade pip -i https://mirrors.aliyun.com/pypi/simple/
     - pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
+    - pip install pytest allure-pytest -i https://mirrors.aliyun.com/pypi/simple/
     - cd 1-API-Automation
     - python -m pytest -vs tests/ --alluredir=allure-results
     artifacts:
@@ -34,7 +35,7 @@ stages:
   - step: build@python
     name: 61a94d35
     displayName: Python 构建
-    pythonVersion: "3.9"
+    pythonVersion: "3.12"
     commands:
     - python -m pip install --upgrade pip -i https://mirrors.aliyun.com/pypi/simple/
     - pip install locust pandas psutil pytest allure-pytest -i https://mirrors.aliyun.com/pypi/simple/

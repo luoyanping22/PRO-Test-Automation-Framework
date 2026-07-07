@@ -18,7 +18,7 @@ stages:
       - step: build@python
         name: api_test
         displayName: API-Automation-Test
-        pythonVersion: '3.13'
+        pythonVersion: '3.12'
         commands:
           - python -m pip install --upgrade pip -i https://mirrors.aliyun.com/pypi/simple/
           - pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
@@ -41,14 +41,13 @@ stages:
       - step: build@python
         name: perf_test
         displayName: Performance-Stress-Test
-        pythonVersion: '3.13'
+        pythonVersion: '3.12'
         commands:
           # 1. 升级 pip 并安装所有性能测试所需的第三方库
           - python -m pip install --upgrade pip -i https://mirrors.aliyun.com/pypi/simple/
           - pip install locust pandas psutil pytest allure-pytest -i https://mirrors.aliyun.com/pypi/simple/
           
           # 2. 切换到性能测试专用目录
-          # Chil-dir 切换目录
           - cd 3-Performance-Testing
           - export PATH=$PATH:$HOME/.local/bin
           

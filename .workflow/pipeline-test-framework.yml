@@ -42,7 +42,7 @@ stages:
     - cd 3-Performance-Testing
     - export PATH=$PATH:$HOME/.local/bin
     - python mock_server.py > mock.log 2>&1 &
-    - sleep 3
+    - sleep 4
     - python -m pytest test_perf_bridge.py --alluredir=../allure-results
     artifacts:
     - name: BUILD_ARTIFACT
